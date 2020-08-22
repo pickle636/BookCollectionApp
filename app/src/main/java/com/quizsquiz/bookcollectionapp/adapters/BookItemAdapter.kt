@@ -3,15 +3,16 @@ package com.quizsquiz.bookcollectionapp.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.quizsquiz.bookcollectionapp.databinding.TaskItemListBinding
 import com.quizsquiz.bookcollectionapp.models.Book
 
-class BookItemAdapter(private val context: Context, private val list: MutableList<Book>) :
+class BookItemAdapter(private val clickListener:(Book) -> Unit) :
     RecyclerView.Adapter<BookItemAdapter.BookItemViewHolder>() {
-
+    var list = mutableListOf<Book>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookItemViewHolder {
-        val inflater = LayoutInflater.from(context)
+        val inflater = LayoutInflater.from(parent.context)
         val binding = TaskItemListBinding.inflate(inflater)
         return BookItemViewHolder(binding)
     }
@@ -20,14 +21,17 @@ class BookItemAdapter(private val context: Context, private val list: MutableLis
 
     override fun onBindViewHolder(holder: BookItemViewHolder, position: Int) {
         val book: Book = list[position]
-        holder.bind(book)
+        holder.bind(book, clickListener)
     }
 
     class BookItemViewHolder(private val binding: TaskItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Book) {
+        fun bind(item: Book, clickListener: (Book) -> Unit) {
             binding.model = item
             binding.executePendingBindings()
+            binding.cardView.setOnClickListener {
+                clickListener(item)
+            }
         }
     }
 
