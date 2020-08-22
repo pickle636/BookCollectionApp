@@ -1,15 +1,14 @@
 package com.quizsquiz.bookcollectionapp.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.quizsquiz.bookcollectionapp.models.Book
-import com.quizsquiz.bookcollectionapp.database.BookRepository
+import com.quizsquiz.bookcollectionapp.repository.Repository
 import kotlinx.coroutines.launch
 
 
-class CreateViewModel(var repository: BookRepository) : ViewModel() {
+class CreateViewModel(var repository: Repository) : ViewModel() {
 
     var book: MutableLiveData<Book> = MutableLiveData()
 

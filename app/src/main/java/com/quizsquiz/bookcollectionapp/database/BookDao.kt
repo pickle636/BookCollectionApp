@@ -6,6 +6,9 @@ import com.quizsquiz.bookcollectionapp.models.Book
 
 @Dao
 interface BookDao {
+//    @Insert
+//    suspend fun insertBooks(list: List<Book>) : Long
+
     @Insert
     suspend fun insertBook(book: Book) : Long
 
