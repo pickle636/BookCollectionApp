@@ -1,39 +1,46 @@
 package com.quizsquiz.bookcollectionapp.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.quizsquiz.bookcollectionapp.database.BookDao
 import com.quizsquiz.bookcollectionapp.models.Book
-import com.quizsquiz.bookcollectionapp.network.Controller
-import kotlinx.coroutines.*
+import com.quizsquiz.bookcollectionapp.network.BookApiService
+import com.quizsquiz.bookcollectionapp.ui.Event
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+@ExperimentalCoroutinesApi
+class Repository(private val bookDao: BookDao?, private val apiService: BookApiService) {
 
-class Repository(private val dao: BookDao?) {
+    private var allBookList = mutableListOf<Book>()
 
-    val booksFromNetwork = Controller.getBooksFromNetwork()
-    var booksFromDB = dao?.getAllBooks()
+    private val allBooksStateFlow = MutableStateFlow(allBookList.toList())
 
 
-    suspend fun insert(book: Book): Long {
-        return dao!!.insertBook(book)
-
+    private suspend fun addData(anecdoteList: List<Book>) {
+        bookDao?.insertBooks(anecdoteList)
+        allBooksStateFlow.value = anecdoteList.toList()
     }
 
-    suspend fun update(book: Book): Int {
 
-        return dao!!.updateBook(book)
-
+    suspend fun getAllBooks(): StateFlow<List<Book>> {
+        allBookList = bookDao?.getAllBooks()!!.toMutableList()
+        allBooksStateFlow.value = allBookList.toList()
+        return allBooksStateFlow
     }
 
-    suspend fun delete(book: Book): Int {
-
-        return dao!!.deleteBook(book)
-
+    private suspend fun deleteAllData() {
+        bookDao?.deleteAll()
     }
 
-    suspend fun deleteAll(): Int {
 
-        return dao!!.deleteAll()
+    suspend fun loadAndPutInDatabase() {
 
+        val list = apiService.getBooks()
+        Log.e("log", "$list")
+        deleteAllData()
+        addData(list)
     }
 
 }

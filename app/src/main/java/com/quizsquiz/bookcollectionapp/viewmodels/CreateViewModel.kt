@@ -21,7 +21,7 @@ class CreateViewModel(var repository: Repository) : ViewModel() {
     fun insertBook() {
         val book = Book(0, title.value!!, description.value!!, author.value!!, published.value!!)
         viewModelScope.launch {
-            repository.insert(book)
+            //repository.insert(book)
         }
 
     }

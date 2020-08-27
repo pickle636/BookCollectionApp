@@ -6,8 +6,9 @@ import com.quizsquiz.bookcollectionapp.models.Book
 
 @Dao
 interface BookDao {
-//    @Insert
-//    suspend fun insertBooks(list: List<Book>) : Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBooks(list: List<Book>): List<Long>
 
     @Insert
     suspend fun insertBook(book: Book) : Long
@@ -22,5 +23,5 @@ interface BookDao {
     suspend fun deleteAll() : Int
 
     @Query("SELECT * FROM books")
-    fun getAllBooks():LiveData<List<Book>>
+    suspend fun getAllBooks(): List<Book>
 }
