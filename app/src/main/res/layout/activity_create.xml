@@ -8,12 +8,10 @@
         <variable
             name="viewmodel"
             type="com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel" />
-        <variable
-            name="book"
-            type="com.quizsquiz.bookcollectionapp.models.Book" />
         <import
             type="com.quizsquiz.bookcollectionapp.util.DataBindingConverters"
             />
+
     </data>
 
     <LinearLayout
@@ -65,12 +63,44 @@
             android:hint="Published"
             android:text="@={DataBindingConverters.convertIntegerToString(viewmodel.published)}"
             android:inputType="numberDecimal" />
-
-        <Button
-            android:id="@+id/btn_create"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> viewmodel.insertBook()}"
-            android:text="CREATE" />
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/btn_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="gone"
+                android:onClick="@{() -> viewmodel.insertBook()}"
+                android:text="CREATE" />
+            <LinearLayout
+                android:id="@+id/ll_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> viewmodel.insertBook()}"
+                    android:text="UPDATE" />
+
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="@{() -> viewmodel.insertBook()}"
+                    android:text="DELETE" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
+
 </layout>

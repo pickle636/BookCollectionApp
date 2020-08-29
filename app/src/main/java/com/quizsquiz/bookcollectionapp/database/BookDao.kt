@@ -1,6 +1,5 @@
 package com.quizsquiz.bookcollectionapp.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.quizsquiz.bookcollectionapp.models.Book
 

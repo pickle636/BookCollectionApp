@@ -7,11 +7,11 @@ import android.net.Network
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.quizsquiz.bookcollectionapp.R
 import com.quizsquiz.bookcollectionapp.adapters.BookItemAdapter
 import com.quizsquiz.bookcollectionapp.database.BookDatabase
@@ -24,12 +24,12 @@ import com.quizsquiz.bookcollectionapp.viewmodels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
-
-class MainActivity : AppCompatActivity() {
+@ExperimentalCoroutinesApi
+class MainActivity : BaseActivity() {
+    val TAG = "MActivity"
     private var viewModel: MainViewModel? = null
     var adapter: BookItemAdapter? = null
     @InternalCoroutinesApi
-    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dao = BookDatabase.getDatabase(application)?.getBookDao()
@@ -50,22 +50,23 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
 
-        if (checkConnection()) {
-            viewModel!!.loadBooksFromServer()
-        } else {
-            viewModel!!.getAllBooks()
-        }
+
+
 
         viewModel!!.bookLiveData.observe(this, { bookList ->
             adapter!!.onChange(bookList)
-        } )
+        })
+
+
+        checkConnectionInMainActivity(viewModel!!)
+
 
 
 
         fab_create.setOnClickListener {
             startActivity(Intent(this, CreateActivity::class.java))
         }
-
+        Log.d(TAG, "onCreate")
     }
 
     private fun listItemClicked(book: Book) {
@@ -73,42 +74,42 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
     @InternalCoroutinesApi
-    @ExperimentalCoroutinesApi
-    private fun checkConnection(): Boolean {
-        var connectivity = false
-        val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkRequest = NetworkRequest.Builder()
-            .build()
-        var callback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                connectivity = true
-                viewModel!!.loadBooksFromServer()
-                Toast.makeText(baseContext, "Network is available", Toast.LENGTH_LONG).show()
-            }
-
-            override fun onLost(network: Network) {
-                connectivity = false
-
-                Toast.makeText(baseContext, "Network was lost", Toast.LENGTH_LONG).show()
-            }
+    override fun onResume() {
+        super.onResume()
+        if (viewModel!!.isConnected.get()) {
+            viewModel!!.loadBooksFromServer()
+        } else {
+            viewModel!!.getAllBooks()
         }
-        try {
-            manager.unregisterNetworkCallback(callback)
-        } catch (e: Exception) {
-            Log.w(
-                "MainActivity",
-                "NetworkCallback for Wi-fi was not registered or already unregistered"
-            )
-        }
-
-        manager.registerNetworkCallback(networkRequest, callback)
-        return connectivity
     }
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause")
+    }
+
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart")
+    }
 
 
 }

@@ -41,6 +41,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/ic_add"
-            android:focusable="true" />
+            android:focusable="true"
+            android:enabled="@{viewmodel.isConnected()}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

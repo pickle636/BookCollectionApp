@@ -1,12 +1,9 @@
 package com.quizsquiz.bookcollectionapp.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.quizsquiz.bookcollectionapp.database.BookDao
 import com.quizsquiz.bookcollectionapp.models.Book
 import com.quizsquiz.bookcollectionapp.network.BookApiService
-import com.quizsquiz.bookcollectionapp.ui.Event
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,10 +15,11 @@ class Repository(private val bookDao: BookDao?, private val apiService: BookApiS
     private val allBooksStateFlow = MutableStateFlow(allBookList.toList())
 
 
-    private suspend fun addData(anecdoteList: List<Book>) {
-        bookDao?.insertBooks(anecdoteList)
-        allBooksStateFlow.value = anecdoteList.toList()
+    private suspend fun addData(bookList: List<Book>) {
+        bookDao?.insertBooks(bookList)
+        allBooksStateFlow.value = bookList.toList()
     }
+
 
 
     suspend fun getAllBooks(): StateFlow<List<Book>> {
@@ -34,7 +32,6 @@ class Repository(private val bookDao: BookDao?, private val apiService: BookApiS
         bookDao?.deleteAll()
     }
 
-
     suspend fun loadAndPutInDatabase() {
 
         val list = apiService.getBooks()
@@ -43,4 +40,9 @@ class Repository(private val bookDao: BookDao?, private val apiService: BookApiS
         addData(list)
     }
 
+    suspend fun uploadBookOnServer(book: Book) {
+        val response = apiService.postBook(book)
+        bookDao?.insertBook(response)
+
+    }
 }

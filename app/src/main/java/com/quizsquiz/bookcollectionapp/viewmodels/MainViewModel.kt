@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
 class MainViewModel(private val repository: Repository) : ViewModel() {
+    var isConnected: ObservableBoolean = ObservableBoolean(false)
     private var _bookLiveData = MutableLiveData<List<Book>>()
     val bookLiveData: LiveData<List<Book>> = _bookLiveData
 
