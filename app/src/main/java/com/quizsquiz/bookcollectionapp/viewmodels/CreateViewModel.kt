@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.quizsquiz.bookcollectionapp.models.Book
 import com.quizsquiz.bookcollectionapp.repository.Repository
-import com.quizsquiz.bookcollectionapp.ui.CreateActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
 class CreateViewModel @ExperimentalCoroutinesApi constructor(var repository: Repository) : ViewModel() {
     var isConnected: ObservableBoolean = ObservableBoolean(false)
+    var isLoadingFinished: MutableLiveData<Boolean> = MutableLiveData(false)
+
     var book: MutableLiveData<Book> = MutableLiveData()
 
     var description: MutableLiveData<String> = MutableLiveData()
@@ -26,6 +27,26 @@ class CreateViewModel @ExperimentalCoroutinesApi constructor(var repository: Rep
         val book = Book(0, title.value!!, description.value!!, author.value!!, published.value!!)
         viewModelScope.launch {
             repository.uploadBookOnServer(book)
+            isLoadingFinished.value = true
         }
+        isLoadingFinished.value = false
+
+    }
+    @ExperimentalCoroutinesApi
+    fun deleteBook(book: Book) {
+        viewModelScope.launch {
+            repository.deleteBookFromServer(book)
+            isLoadingFinished.value = true
+        }
+        isLoadingFinished.value = false
+    }
+
+    @ExperimentalCoroutinesApi
+    fun updateBook(book: Book) {
+        viewModelScope.launch {
+            repository.updateBookFromServer(book)
+            isLoadingFinished.value = true
+        }
+        isLoadingFinished.value = false
     }
 }

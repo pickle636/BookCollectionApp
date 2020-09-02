@@ -1,5 +1,6 @@
 package com.quizsquiz.bookcollectionapp.ui
 
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
@@ -7,6 +8,8 @@ import android.net.Network
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +24,7 @@ import com.quizsquiz.bookcollectionapp.network.Controller
 import com.quizsquiz.bookcollectionapp.repository.Repository
 import com.quizsquiz.bookcollectionapp.util.MainViewModelFactory
 import com.quizsquiz.bookcollectionapp.viewmodels.MainViewModel
+import kotlinx.android.synthetic.main.activity_create.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -51,8 +55,6 @@ class MainActivity : BaseActivity() {
         binding.viewmodel = viewModel
 
 
-
-
         viewModel!!.bookLiveData.observe(this, { bookList ->
             adapter!!.onChange(bookList)
         })
@@ -62,15 +64,20 @@ class MainActivity : BaseActivity() {
 
 
 
-
         fab_create.setOnClickListener {
             startActivity(Intent(this, CreateActivity::class.java))
         }
-        Log.d(TAG, "onCreate")
+
+
     }
 
     private fun listItemClicked(book: Book) {
-//        viewModel?.deleteBookByTouch(book)
+        if (viewModel!!.isConnected.get()){
+            val intent = Intent(this, CreateActivity::class.java)
+            intent.putExtra("book", book)
+            startActivity(intent)
+        }
+
     }
 
 
@@ -84,33 +91,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
     }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(TAG, "onRestart")
-    }
-
-
 }
 

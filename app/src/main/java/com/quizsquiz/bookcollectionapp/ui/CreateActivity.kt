@@ -1,30 +1,29 @@
 package com.quizsquiz.bookcollectionapp.ui
 
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.quizsquiz.bookcollectionapp.R
 import com.quizsquiz.bookcollectionapp.database.BookDatabase
 import com.quizsquiz.bookcollectionapp.databinding.ActivityCreateBinding
+import com.quizsquiz.bookcollectionapp.models.Book
 import com.quizsquiz.bookcollectionapp.network.Controller
 import com.quizsquiz.bookcollectionapp.repository.Repository
 import com.quizsquiz.bookcollectionapp.util.CreateViewModelFactory
 import com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel
+import kotlinx.android.synthetic.main.activity_create.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 class CreateActivity : BaseActivity() {
-
-    private val TAG = "CActivity"
-
+    private lateinit var viewModel: CreateViewModel
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dao = BookDatabase.getDatabase(application)?.getBookDao()
         val viewModelFactory = CreateViewModelFactory(Repository(dao, Controller.getApiArguments()))
-        val viewModel by lazy { ViewModelProvider(this, viewModelFactory).get(CreateViewModel::class.java) }
-
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CreateViewModel::class.java)
         val binding: ActivityCreateBinding = DataBindingUtil.setContentView(
             this,
             R.layout.activity_create
@@ -32,41 +31,37 @@ class CreateActivity : BaseActivity() {
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
 
-
         checkConnectionInCreateActivity(viewModel)
 
-        Log.d(TAG, "onCreate")
+        val book = intent.getParcelableExtra<Book>("book")
+        binding.book = book
+
+        btn_create.setOnClickListener {
+            viewModel.insertBook()
+            waitUntilFinishedToCloseActivity()
+        }
+        btn_update.setOnClickListener {
+            viewModel.updateBook(binding.book!!)
+            waitUntilFinishedToCloseActivity()
+        }
+        btn_delete.setOnClickListener {
+            viewModel.deleteBook(binding.book!!)
+            waitUntilFinishedToCloseActivity()
+        }
 
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
+    private fun waitUntilFinishedToCloseActivity() {
+        viewModel.isLoadingFinished.observe(this, { boolean ->
+            if (boolean) {
+                finish()
+            }
+        })
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(TAG, "onRestart")
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
     }
 }

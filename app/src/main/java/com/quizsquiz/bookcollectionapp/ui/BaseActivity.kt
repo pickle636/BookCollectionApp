@@ -5,20 +5,13 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
 import com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel
 import com.quizsquiz.bookcollectionapp.viewmodels.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-open class BaseActivity: AppCompatActivity() {
+open class BaseActivity : AppCompatActivity() {
 
-
-    override fun onResume() {
-        super.onResume()
-
-    }
 
     @ExperimentalCoroutinesApi
     fun checkConnectionInMainActivity(viewModel: MainViewModel) {
@@ -28,13 +21,10 @@ open class BaseActivity: AppCompatActivity() {
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 viewModel.isConnected.set(true)
-                Toast.makeText(baseContext, "Network is available", Toast.LENGTH_LONG).show()
             }
 
             override fun onLost(network: Network) {
                 viewModel.isConnected.set(false)
-
-                Toast.makeText(baseContext, "Network was lost", Toast.LENGTH_LONG).show()
             }
         }
         try {
@@ -54,16 +44,13 @@ open class BaseActivity: AppCompatActivity() {
         val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkRequest = NetworkRequest.Builder()
             .build()
-        var callback = object : ConnectivityManager.NetworkCallback() {
+        val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 viewModel.isConnected.set(true)
-                Toast.makeText(baseContext, "Network is available", Toast.LENGTH_LONG).show()
             }
 
             override fun onLost(network: Network) {
                 viewModel.isConnected.set(false)
-
-                Toast.makeText(baseContext, "Network was lost", Toast.LENGTH_LONG).show()
             }
         }
         try {
@@ -77,5 +64,4 @@ open class BaseActivity: AppCompatActivity() {
 
         manager.registerNetworkCallback(networkRequest, callback)
     }
-
 }

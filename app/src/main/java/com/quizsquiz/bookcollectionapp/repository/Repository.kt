@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 class Repository(private val bookDao: BookDao?, private val apiService: BookApiService) {
 
     private var allBookList = mutableListOf<Book>()
-
     private val allBooksStateFlow = MutableStateFlow(allBookList.toList())
 
 
@@ -20,15 +19,13 @@ class Repository(private val bookDao: BookDao?, private val apiService: BookApiS
         allBooksStateFlow.value = bookList.toList()
     }
 
-
-
     suspend fun getAllBooks(): StateFlow<List<Book>> {
         allBookList = bookDao?.getAllBooks()!!.toMutableList()
         allBooksStateFlow.value = allBookList.toList()
         return allBooksStateFlow
     }
 
-    private suspend fun deleteAllData() {
+    private suspend fun deleteAllDataFromDB() {
         bookDao?.deleteAll()
     }
 
@@ -36,7 +33,7 @@ class Repository(private val bookDao: BookDao?, private val apiService: BookApiS
 
         val list = apiService.getBooks()
         Log.e("log", "$list")
-        deleteAllData()
+        deleteAllDataFromDB()
         addData(list)
     }
 
@@ -45,4 +42,14 @@ class Repository(private val bookDao: BookDao?, private val apiService: BookApiS
         bookDao?.insertBook(response)
 
     }
+    suspend fun deleteBookFromServer(book: Book) {
+        apiService.deleteBook(book.id)
+        bookDao?.deleteBook(book)
+    }
+
+    suspend fun updateBookFromServer(book: Book) {
+        apiService.updateBook(book.id, book)
+        bookDao?.updateBook(book)
+    }
+
 }
