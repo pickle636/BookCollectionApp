@@ -22,31 +22,4 @@ class ApplicationModule {
             .build()
         return retrofit.create(BookApiService::class.java)
     }
-    lateinit var database: MyDatabase
-
-    @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): MyDatabase {
-        // Make sure a read is made before writing so our onCreate callback is executed first
-        database =  Room.databaseBuilder(
-            context,
-            MyDatabase::class.java, "database.db"
-        )
-            .addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    GlobalScope.launch {
-                        MyDatabase.onCreate(database, context) // in companion of MyDatabase
-                    }
-
-                }
-            })
-            .build()
-        return database
-    }
-
-    @Provides
-    fun provideObjectDao(database: MyDatabase): ObjectDao {
-        return database.objectDao()
-    }
 }
