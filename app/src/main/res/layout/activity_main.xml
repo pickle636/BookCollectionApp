@@ -9,28 +9,40 @@
         <variable
             name="adapter"
             type="com.quizsquiz.bookcollectionapp.adapters.BookItemAdapter" />
+        <import type="android.view.View"/>
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_task_list"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adapter="@{adapter}"
-            android:clipToPadding="false"
-            android:padding="4dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/task_item_list" />
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_network_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connection lost."
+                android:gravity="center"
+                android:background="@android:color/holo_red_light"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:elevation="5dp"
+                android:visibility="@{viewmodel.isConnected() ? View.GONE : View.VISIBLE}" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_task_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adapter="@{adapter}"
+                android:clipToPadding="false"
+                android:padding="4dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/task_item_list" />
+        </LinearLayout>
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create"
             android:layout_width="wrap_content"
@@ -41,6 +53,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:src="@drawable/ic_add"
-            android:focusable="true" />
+            android:focusable="true"
+            android:enabled="@{viewmodel.isConnected()}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

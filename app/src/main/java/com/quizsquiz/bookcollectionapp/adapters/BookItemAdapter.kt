@@ -1,9 +1,7 @@
 package com.quizsquiz.bookcollectionapp.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.quizsquiz.bookcollectionapp.databinding.TaskItemListBinding
 import com.quizsquiz.bookcollectionapp.models.Book

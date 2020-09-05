@@ -6,71 +6,178 @@
     <data>
 
         <variable
-            name="viewmodel"
-            type="com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel" />
-        <variable
             name="book"
             type="com.quizsquiz.bookcollectionapp.models.Book" />
-        <import
-            type="com.quizsquiz.bookcollectionapp.util.DataBindingConverters"
-            />
+
+        <variable
+            name="viewmodel"
+            type="com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel" />
+
+        <import type="com.quizsquiz.bookcollectionapp.util.DataBindingConverters" />
+
+        <import type="android.view.View" />
+
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="20dp"
-        tools:context=".ui.CreateActivity">
-
-
-        <EditText
-            android:id="@+id/et_title"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_network_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="Title"
-            android:inputType="textPersonName"
-            android:text="@={viewmodel.title}" />
+            android:text="Connection lost."
+            android:gravity="center"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:elevation="5dp"
+            android:visibility="@{viewmodel.isConnected() ? View.GONE : View.VISIBLE}" />
 
-        <EditText
-            android:id="@+id/et_description"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="Description"
-            android:text="@={viewmodel.description}"
-            android:inputType="textPersonName" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:visibility="@{book.id != 0 ? View.GONE : View.VISIBLE}"
+            tools:context=".ui.CreateActivity">
 
-        <EditText
-            android:id="@+id/et_author"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="Author"
-            android:text="@={viewmodel.author}"
-            android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/et_pub"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:ems="10"
-            android:hint="Published"
-            android:text="@={DataBindingConverters.convertIntegerToString(viewmodel.published)}"
-            android:inputType="numberDecimal" />
+            <EditText
+                android:id="@+id/et_title_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Title"
+                android:inputType="textPersonName"
+                android:text="@={viewmodel.title}" />
 
-        <Button
-            android:id="@+id/btn_create"
+            <EditText
+                android:id="@+id/et_description_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Description"
+                android:inputType="textPersonName"
+                android:text="@={viewmodel.description}" />
+
+            <EditText
+                android:id="@+id/et_author_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Author"
+                android:inputType="textPersonName"
+                android:text="@={viewmodel.author}" />
+
+            <EditText
+                android:id="@+id/et_pub_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Published"
+                android:inputType="numberDecimal"
+                android:text="@={DataBindingConverters.convertIntegerToString(viewmodel.published)}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_create"
+                    android:layout_width="match_parent"
+                    android:enabled="@{viewmodel.isConnected()}"
+                    android:layout_height="wrap_content"
+                    android:text="CREATE" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewmodel.insertBook()}"
-            android:text="CREATE" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="20dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="20dp"
+            android:visibility="@{book.id == 0 ? View.GONE : View.VISIBLE}"
+            tools:context=".ui.CreateActivity">
+
+
+            <EditText
+                android:id="@+id/et_title_update_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Title"
+                android:inputType="textPersonName"
+                android:text="@={book.title}" />
+
+            <EditText
+                android:id="@+id/et_description_update_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Description"
+                android:inputType="textPersonName"
+                android:text="@={book.description}" />
+
+            <EditText
+                android:id="@+id/et_author_update_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Author"
+                android:inputType="textPersonName"
+                android:text="@={book.author}" />
+
+            <EditText
+                android:id="@+id/et_pub_update_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:ems="10"
+                android:hint="Published"
+                android:inputType="numberDecimal"
+                android:text="@={DataBindingConverters.convertIntegerToString(book.published)}" />
+
+            <LinearLayout
+                android:id="@+id/ll_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{viewmodel.isConnected()}"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:text="UPDATE" />
+
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{viewmodel.isConnected()}"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:text="DELETE" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
+
+
 </layout>
