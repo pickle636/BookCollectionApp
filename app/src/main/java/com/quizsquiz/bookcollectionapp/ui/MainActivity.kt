@@ -33,21 +33,15 @@ class MainActivity : BaseActivity() {
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
 
-
         viewModel.bookLiveData.observe(this, { bookList ->
             adapter!!.onChange(bookList)
         })
 
-
         checkConnectionInMainActivity(viewModel)
-
-
 
         fab_create.setOnClickListener {
             startActivity(Intent(this, CreateActivity::class.java))
         }
-
-
     }
 
     private fun listItemClicked(book: Book) {
@@ -65,6 +59,8 @@ class MainActivity : BaseActivity() {
         super.onResume()
         if (viewModel.isConnected.get()) {
             viewModel.loadBooksFromServer()
+        } else {
+            viewModel.getAllBooks()
         }
     }
 

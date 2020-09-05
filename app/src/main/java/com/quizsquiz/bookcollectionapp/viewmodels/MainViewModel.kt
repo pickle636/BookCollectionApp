@@ -28,13 +28,20 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
     @InternalCoroutinesApi
     fun loadBooksFromServer() {
         scope.launch {
-            repository.loadBooks().collect { it ->
+            repository.loadAndPutInDatabase()
+
+        }
+        getAllBooks()
+    }
+
+    @InternalCoroutinesApi
+    fun getAllBooks() {
+        scope.launch {
+            repository.getAllBooks().collect { it ->
                 _bookLiveData.postValue(it)
             }
         }
     }
-
-
 }
 
 

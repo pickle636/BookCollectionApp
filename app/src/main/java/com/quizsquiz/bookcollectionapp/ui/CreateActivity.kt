@@ -12,11 +12,11 @@ import com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class CreateActivity : BaseActivity() {
 
     private val viewModel : CreateViewModel by viewModels()
-    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding: ActivityCreateBinding = DataBindingUtil.setContentView(
