@@ -1,6 +1,7 @@
 package com.quizsquiz.bookcollectionapp.viewmodels
 
 import androidx.databinding.ObservableBoolean
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
-class CreateViewModel @ExperimentalCoroutinesApi constructor(var repository: Repository) : ViewModel() {
+class CreateViewModel @ExperimentalCoroutinesApi
+@ViewModelInject constructor(var repository: Repository) : ViewModel() {
     var isConnected: ObservableBoolean = ObservableBoolean(false)
     var isLoadingFinished: MutableLiveData<Boolean> = MutableLiveData(false)
 

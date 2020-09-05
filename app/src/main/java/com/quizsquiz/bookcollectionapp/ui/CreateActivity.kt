@@ -3,27 +3,22 @@ package com.quizsquiz.bookcollectionapp.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.quizsquiz.bookcollectionapp.R
-import com.quizsquiz.bookcollectionapp.database.BookDatabase
 import com.quizsquiz.bookcollectionapp.databinding.ActivityCreateBinding
 import com.quizsquiz.bookcollectionapp.models.Book
-import com.quizsquiz.bookcollectionapp.network.Controller
-import com.quizsquiz.bookcollectionapp.repository.Repository
-import com.quizsquiz.bookcollectionapp.util.CreateViewModelFactory
 import com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
+@AndroidEntryPoint
 class CreateActivity : BaseActivity() {
-    private lateinit var viewModel: CreateViewModel
+
+    private val viewModel : CreateViewModel by viewModels()
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dao = BookDatabase.getDatabase(application)?.getBookDao()
-        val viewModelFactory = CreateViewModelFactory(Repository(dao, Controller.getApiArguments()))
-        viewModel = ViewModelProvider(this, viewModelFactory).get(CreateViewModel::class.java)
         val binding: ActivityCreateBinding = DataBindingUtil.setContentView(
             this,
             R.layout.activity_create

@@ -30,12 +30,12 @@ data class Book(
 
     companion object : Parceler<Book> {
 
-        override fun Book.write(p0: Parcel, p1: Int) {
-            p0.writeInt(id)
-            p0.writeString(title)
-            p0.writeString(description)
-            p0.writeString(author)
-            p0.writeInt(published!!)
+        override fun Book.write(parcel: Parcel, flags: Int) {
+            parcel.writeInt(id)
+            parcel.writeString(title)
+            parcel.writeString(description)
+            parcel.writeString(author)
+            parcel.writeInt(published!!)
         }
 
         override fun create(parcel: Parcel): Book {

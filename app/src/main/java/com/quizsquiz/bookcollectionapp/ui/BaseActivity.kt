@@ -9,11 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.quizsquiz.bookcollectionapp.viewmodels.CreateViewModel
 import com.quizsquiz.bookcollectionapp.viewmodels.MainViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
+@ExperimentalCoroutinesApi
 open class BaseActivity : AppCompatActivity() {
-
-
-    @ExperimentalCoroutinesApi
     fun checkConnectionInMainActivity(viewModel: MainViewModel) {
         val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkRequest = NetworkRequest.Builder()
@@ -48,7 +45,6 @@ open class BaseActivity : AppCompatActivity() {
             override fun onAvailable(network: Network) {
                 viewModel.isConnected.set(true)
             }
-
             override fun onLost(network: Network) {
                 viewModel.isConnected.set(false)
             }
@@ -61,7 +57,6 @@ open class BaseActivity : AppCompatActivity() {
                 "NetworkCallback for Wi-fi was not registered or already unregistered"
             )
         }
-
         manager.registerNetworkCallback(networkRequest, callback)
     }
 }

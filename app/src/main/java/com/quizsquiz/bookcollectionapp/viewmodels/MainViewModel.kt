@@ -2,6 +2,7 @@ package com.quizsquiz.bookcollectionapp.viewmodels
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +13,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 
 @ExperimentalCoroutinesApi
-class MainViewModel(private val repository: Repository) : ViewModel() {
+class MainViewModel @ViewModelInject constructor(private val repository: Repository) : ViewModel() {
     var isConnected: ObservableBoolean = ObservableBoolean(false)
     private var _bookLiveData = MutableLiveData<List<Book>>()
     val bookLiveData: LiveData<List<Book>> = _bookLiveData
@@ -27,21 +28,12 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     @InternalCoroutinesApi
     fun loadBooksFromServer() {
         scope.launch {
-            repository.loadAndPutInDatabase()
-
-        }
-        getAllBooks()
-    }
-
-
-    @InternalCoroutinesApi
-    fun getAllBooks() {
-        scope.launch {
-            repository.getAllBooks().collect { it ->
+            repository.loadBooks().collect { it ->
                 _bookLiveData.postValue(it)
             }
         }
     }
+
 
 }
 

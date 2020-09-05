@@ -8,7 +8,7 @@ import com.quizsquiz.bookcollectionapp.models.Book
 
 class BookItemAdapter(private val clickListener:(Book) -> Unit) :
     RecyclerView.Adapter<BookItemAdapter.BookItemViewHolder>() {
-    var list = mutableListOf<Book>()
+    private var list = mutableListOf<Book>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = TaskItemListBinding.inflate(inflater)
