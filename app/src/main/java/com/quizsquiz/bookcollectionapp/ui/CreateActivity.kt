@@ -32,9 +32,9 @@ class CreateActivity : BaseActivity() {
         binding.book = book
 
         btn_create.setOnClickListener {
-            viewModel.insertBook()
-            waitUntilFinishedToCloseActivity()
-        }
+        viewModel.insertBook()
+        waitUntilFinishedToCloseActivity()
+    }
         btn_update.setOnClickListener {
             viewModel.updateBook(binding.book!!)
             waitUntilFinishedToCloseActivity()
@@ -47,7 +47,7 @@ class CreateActivity : BaseActivity() {
     }
 
     private fun waitUntilFinishedToCloseActivity() {
-        viewModel.isLoadingFinished.observe(this, { boolean ->
+        viewModel.isLoadingActive.observe(this, { boolean ->
             if (boolean) {
                 finish()
             }

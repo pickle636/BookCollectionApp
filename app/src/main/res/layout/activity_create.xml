@@ -54,7 +54,7 @@
                 android:ems="10"
                 android:hint="Title"
                 android:inputType="textPersonName"
-                android:text="@={viewmodel.title}" />
+                android:text="@={viewmodel.book.title}" />
 
             <EditText
                 android:id="@+id/et_description_create"
@@ -64,7 +64,7 @@
                 android:ems="10"
                 android:hint="Description"
                 android:inputType="textPersonName"
-                android:text="@={viewmodel.description}" />
+                android:text="@={viewmodel.book.description}" />
 
             <EditText
                 android:id="@+id/et_author_create"
@@ -74,7 +74,7 @@
                 android:ems="10"
                 android:hint="Author"
                 android:inputType="textPersonName"
-                android:text="@={viewmodel.author}" />
+                android:text="@={viewmodel.book.author}" />
 
             <EditText
                 android:id="@+id/et_pub_create"
@@ -84,7 +84,7 @@
                 android:ems="10"
                 android:hint="Published"
                 android:inputType="numberDecimal"
-                android:text="@={DataBindingConverters.convertIntegerToString(viewmodel.published)}" />
+                android:text="@={DataBindingConverters.convertIntegerToString(viewmodel.book.published)}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,6 +97,13 @@
                     android:enabled="@{viewmodel.isConnected()}"
                     android:layout_height="wrap_content"
                     android:text="CREATE" />
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    android:visibility="@{viewmodel.isLoadingActive() ? View.GONE : View.VISIBLE}" />
 
             </LinearLayout>
 
@@ -176,7 +183,15 @@
                     android:layout_weight="1"
                     android:text="DELETE" />
             </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible"
+                android:visibility="@{viewmodel.isLoadingActive() ? View.GONE : View.VISIBLE}" />
         </LinearLayout>
+
     </LinearLayout>
 
 

@@ -32,7 +32,6 @@ class Repository @Inject constructor(private val apiService: BookApiService, pri
     }
 
     suspend fun loadAndPutInDatabase() {
-
         val list = apiService.getBooks()
         deleteAllDataFromDB()
         addData(list)

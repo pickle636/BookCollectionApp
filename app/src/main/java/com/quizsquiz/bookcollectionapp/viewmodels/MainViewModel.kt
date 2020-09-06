@@ -24,12 +24,13 @@ class MainViewModel @ViewModelInject constructor(private val repository: Reposit
 
     private val scope = viewModelScope + handler + Dispatchers.Default
 
+    var isLoadingActive: MutableLiveData<Boolean> = MutableLiveData(scope.isActive)
+
 
     @InternalCoroutinesApi
     fun loadBooksFromServer() {
         scope.launch {
             repository.loadAndPutInDatabase()
-
         }
         getAllBooks()
     }

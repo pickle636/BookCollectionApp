@@ -29,9 +29,8 @@ class ApplicationModule {
         return retrofit.create(BookApiService::class.java)
     }
 
-
     @Provides
-    fun provideStudentDao(@ApplicationContext appContext: Context) : Dao {
+    fun provideBookDao(@ApplicationContext appContext: Context) : Dao {
         return BookDatabase.getInstance(appContext).bookDao
     }
 

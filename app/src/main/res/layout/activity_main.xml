@@ -15,20 +15,23 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
-            android:orientation="vertical"
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tv_network_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Connection lost."
-                android:gravity="center"
                 android:background="@android:color/holo_red_light"
+                android:elevation="5dp"
+                android:gravity="center"
+                android:text="Connection lost."
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:elevation="5dp"
                 android:visibility="@{viewmodel.isConnected() ? View.GONE : View.VISIBLE}" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -42,7 +45,19 @@
                 android:paddingBottom="20dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/task_item_list" />
+
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewmodel.isLoadingActive() ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_create"
             android:layout_width="wrap_content"
@@ -55,6 +70,7 @@
             android:src="@drawable/ic_add"
             android:focusable="true"
             android:enabled="@{viewmodel.isConnected()}"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
